@@ -18,6 +18,7 @@
 
 .para {
   max-width: var(--max-width);
+  text-indent: var(--text-indent);
 }
 
 .para::first-letter {

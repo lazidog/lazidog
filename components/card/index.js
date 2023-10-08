@@ -1,33 +1,25 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 import styles from './card.module.css';
+import AnimComponent from '../animcomponent';
 
-const variants = {
-  hidden: { opacity: 0, x: 0, y: 20 },
-  enter: { opacity: 1, x: 0, y: 0 },
-  exit: { opacity: 0, x: -0, y: 20 },
-};
-
-export default function Card({ delay, title, desc, href }) {
+export default function Card({ delay, image, title, desc, href }) {
   return (
-    <AnimatePresence>
-      <motion.a
-        initial="hidden"
-        animate="enter"
-        exit="exit"
-        variants={variants}
-        transition={{ duration: 0.4, delay, type: 'easeInOut' }}
-        style={{ position: 'relative' }}
-        href={href}
-        className={styles.card}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+    <AnimComponent styles={styles.card} delay={delay}>
+      <a href={href} target="_blank" rel="noopener noreferrer">
+        <Image
+          className={styles.img}
+          src={image}
+          alt="lazilearning"
+          loading="lazy"
+          fill
+          objectFit="contain"
+        ></Image>
         <h2>
           {title} <span>-&gt;</span>
         </h2>
         <p>{desc}</p>
-      </motion.a>
-    </AnimatePresence>
+      </a>
+    </AnimComponent>
   );
 }
