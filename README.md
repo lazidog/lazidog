@@ -1,1 +1,1 @@
-[lazidog]('https://lazidog.vercel.app/')
+[lazidog](https://lazidog.vercel.app/)
