@@ -4,7 +4,7 @@ import { Rubik } from 'next/font/google';
 const font = Rubik({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Lazilearning',
+  title: 'Lazidog',
 };
 
 export default function RootLayout({ children }) {
