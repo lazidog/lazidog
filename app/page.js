@@ -1,6 +1,11 @@
 'use client';
 
-import { IoLogoInstagram, IoLogoGithub, IoLogoFacebook } from 'react-icons/io5';
+import {
+  IoLogoInstagram,
+  IoLogoGithub,
+  IoLogoFacebook,
+  IoLogoLinkedin,
+} from 'react-icons/io5';
 
 import styles from './page.module.css';
 import Card from '@/components/card';
@@ -90,6 +95,20 @@ export default function Home() {
             <span style={{ marginLeft: '1em' }}>@Nguyễn Văn Tiến</span>
           </a>
         </AnimComponent>
+        <AnimComponent styles={styles.row}>
+          <a
+            href="https://www.linkedin.com/in/nvtien247/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.button}
+          >
+            <IoLogoLinkedin></IoLogoLinkedin>
+            <span style={{ marginLeft: '1em' }}>
+              @Nguyễn Văn Tiến (nvtien247)
+            </span>
+          </a>
+        </AnimComponent>
+
         <h3 className={styles.section}>Projects</h3>
         <div className={styles.grid}>
           <Card
