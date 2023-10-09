@@ -30,6 +30,7 @@
   width: 100% !important;
   position: relative !important;
   height: unset !important;
+  object-fit: contain;
 }
 
 /* Enable hover only on non-touch devices */

@@ -13,7 +13,6 @@ export default function Card({ delay, image, title, desc, href }) {
           alt="lazilearning"
           loading="lazy"
           fill
-          objectFit="contain"
         ></Image>
         <h2>
           {title} <span>-&gt;</span>

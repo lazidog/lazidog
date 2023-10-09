@@ -94,14 +94,14 @@ export default function Home() {
         <div className={styles.grid}>
           <Card
             delay={0.1}
-            image={'/lazidog.jpg'}
+            image={'/projects/lazilearning-screenshot.png'}
             title={'Lazilearning'}
             desc={'Simple markdown blog to save my learning process'}
-            href={''}
+            href={'https://lazilearning.vercel.app/'}
           ></Card>
           <Card
             delay={0.2}
-            image={'/lazidog.jpg'}
+            image={'/projects/source-screenshot.png'}
             title={'Source'}
             desc={'Github source'}
             href={'https://github.com/lazidog/lazidog'}
