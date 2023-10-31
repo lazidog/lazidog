@@ -20,28 +20,19 @@ export default function Home() {
       <Me />
       <div className={styles.content}>
         <h3 className={styles.section}>Works</h3>
-        <AnimComponent styles={styles.box}>
-          <h5>02 - 2023</h5>{' '}
-          <span>
-            Fresher Backend Developer at{' '}
-            <a className={styles.link2} href="https://itrvn.com/">
-              ITR-VN
-            </a>
-          </span>
-        </AnimComponent>
         <AnimComponent styles={styles.box} delay={0.1}>
-          <h5>10 - 2022</h5>{' '}
+          <h5>10/2022 - 08/2023</h5>{' '}
           <span>
-            Intern Backend Developer at{' '}
+            Fresher Backend (NodeJS) Developer at{' '}
             <a className={styles.link2} href="https://itrvn.com/">
               ITR-VN
             </a>
           </span>
         </AnimComponent>
         <AnimComponent styles={styles.box} delay={0.2}>
-          <h5>06 - 2022</h5>
+          <h5>06/2022 - 08/2022</h5>
           <span>
-            Fresher Mobile Developer at{' '}
+            Fresher Mobile (React Native) Developer at{' '}
             <a className={styles.link2} href="https://mwg.vn/">
               MWG - thegioididong.com
             </a>
