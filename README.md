@@ -26,5 +26,5 @@
 - packages:
   - db:
     - prisma
-    - scaffdog
+    - scaffdog: create file template (use for create data migration template)
 - apps:
