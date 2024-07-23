@@ -1,5 +1,7 @@
 # History commits in short
 
+## 23072024 - Rename project
+
 ## 15072024 - Seed data & data migration
 
 - Use `scaffdog` to create template for data migration

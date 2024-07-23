@@ -1,4 +1,9 @@
-# next-monorepo-boilerplate
+# pnpm-monorepo-boilerplate
+
+## Before start
+
+- Rename project in `package.json`, `docker-compose.yml`
+- Find `FIXME` and update to your own value
 
 ## Prepare
 
