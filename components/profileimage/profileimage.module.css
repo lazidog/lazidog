@@ -1,0 +1,11 @@
+.logo {
+  position: relative;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    filter: drop-shadow(0 0 0.7rem var(--high-light));
+  }
+}
