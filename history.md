@@ -1,5 +1,11 @@
 # History commits in short
 
+## 24072024 - Force update `history.md` when commit on main
+
+- Use hook `pre-commit` of husky to run command check if history file is updated or not
+
+## 23072024 - Rename project
+
 ## 15072024 - Seed data & data migration
 
 - Use `scaffdog` to create template for data migration

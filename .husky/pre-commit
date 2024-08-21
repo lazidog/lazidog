@@ -2,3 +2,16 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 pnpm lint-staged
+
+check_if_history_file_updated() {
+  # dont know why --cached --quiet not working so I decide to use history
+  git diff --cached --name-only | grep -q '^history.md$';  IS_HISTORY_UPDATED=$?;
+  BRANCH=$(git rev-parse --abbrev-ref HEAD);
+  if [ $IS_HISTORY_UPDATED -eq 1 -a $BRANCH = "main" ]; then
+    echo "[STOP] Ur on branch main, update history file now MDFK!";
+    exit 1;
+  fi
+  exit 0;
+}
+
+check_if_history_file_updated;
