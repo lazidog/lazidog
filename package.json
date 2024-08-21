@@ -1,6 +1,5 @@
 {
-  "name": "next-monorepo-boilerplate",
-  "private": true,
+  "name": "lazidog",
   "devDependencies": {
     "eslint": "8.40.0",
     "husky": "^8.0.3",

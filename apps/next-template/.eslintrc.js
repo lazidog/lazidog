@@ -2,8 +2,8 @@
   /** @type {import('eslint').Linter.Config} */
   module.exports = {
     extends: [
-      '@root/style-code/eslint/base',
-      '@root/style-code/eslint/next',
+      '@lazidog/style-code/eslint/base',
+      '@lazidog/style-code/eslint/next',
     ].map(require.resolve),
     ignorePatterns: ['src/gql'],
   };
