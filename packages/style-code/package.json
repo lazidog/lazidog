@@ -1,10 +1,17 @@
 {
   "name": "@lazidog/style-code",
   "version": "1.0.0",
-  "keywords": [],
+  "keywords": [
+    "eslint"
+  ],
   "author": "",
   "license": "ISC",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lazidog/lazidog.git",
+    "directory": "packages/style-code"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
