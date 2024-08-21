@@ -1,5 +1,7 @@
 # History commits in short
 
+## 21082024 - Fix bug "Force update `history.md` when commit on main"
+
 ## 24072024 - Force update `history.md` when commit on main
 
 - Use hook `pre-commit` of husky to run command check if history file is updated or not
