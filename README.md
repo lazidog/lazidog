@@ -1,1 +1,5 @@
-[lazidog](https://lazidog.vercel.app/)
+# README
+
+## Prepare
+
+- direnv
