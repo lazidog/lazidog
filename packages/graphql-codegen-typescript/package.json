@@ -1,5 +1,5 @@
 {
-  "name": "@lazidog/graphql-codegen-typescript-plugin",
+  "name": "@lazidog/graphql-codegen-typescript",
   "version": "1.0.0",
   "description": "GraphQL Code Generator TypeScript plugin with @customResolver directive support",
   "main": "index.js",
