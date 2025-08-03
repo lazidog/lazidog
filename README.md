@@ -1,5 +1,1 @@
-# README
-
-## Prepare
-
-- direnv
+Hi~ :Đ
