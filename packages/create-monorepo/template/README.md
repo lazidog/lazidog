@@ -1,0 +1,5 @@
+# README
+
+## Prepare
+
+- direnv
