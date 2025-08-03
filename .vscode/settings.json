@@ -4,7 +4,7 @@
     "source.organizeImports": "explicit"
   },
   "editor.formatOnSave": true,
-  "cSpell.words": ["lazizone"],
+  "cSpell.words": ["lazizone", "codegen", "prisma", "graphql"],
   "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"
   },

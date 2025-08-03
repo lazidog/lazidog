@@ -1,0 +1,38 @@
+{
+  "name": "@lazidog/graphql-codegen-typescript-resolvers-plugin",
+  "version": "1.0.0",
+  "description": "GraphQL Code Generator TypeScript Resolvers plugin with @customResolver directive support",
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "require": "./index.js"
+    }
+  },
+  "peerDependencies": {
+    "@graphql-codegen/typescript-resolvers": "*",
+    "@graphql-tools/utils": "*",
+    "graphql": "*"
+  },
+  "devDependencies": {
+    "@graphql-codegen/typescript-resolvers": "^4.0.1",
+    "@graphql-tools/utils": "^10.0.0",
+    "graphql": "^16.8.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lazidog/lazidog.git"
+  },
+  "keywords": [
+    "graphql",
+    "codegen",
+    "typescript",
+    "resolvers",
+    "plugin",
+    "customResolver"
+  ],
+  "author": "lazidog",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}
