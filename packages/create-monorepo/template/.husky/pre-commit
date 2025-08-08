@@ -14,7 +14,7 @@ check_if_CHANGELOG_file_updated() {
 
   if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "dev" ]; then
     echo "[CHECKIT] Maybe CHANGELOG file not updated!"
-    git diff --cached --name-only | grep '^CHANGELOG.md$' || echo "❗️CHANGELOG.md was not updated."
+    git diff --cached --name-only | grep '^CHANGELOG.md$'
   fi
 
   return 0
