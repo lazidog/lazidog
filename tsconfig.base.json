@@ -4,6 +4,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    // resolveJsonModule allows you to import foo from './bar.json'. This only works when Node-style module resolution is used (like how node resolves files)
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,

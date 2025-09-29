@@ -1,0 +1,51 @@
+{
+  "name": "@lazidog/ddd-package",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lazidog/lazidog.git"
+  },
+  "keywords": [
+    "Domain-driven design",
+    "Event sourcing",
+    "Result type error handling",
+    "Functional programming",
+    "Repository pattern",
+    "Use case pattern",
+    "Workflow orchestration"
+  ],
+  "author": "lazidog",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check ./src",
+    "fmt": "biome format --write ./src",
+    "check": "biome check ./src --write"
+  },
+  "dependencies": {
+    "neverthrow": "^6",
+    "uuid": "^9"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/uuid": "^9",
+    "typescript": "^5",
+    "ts-node": "^10",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": ["dist"]
+}
