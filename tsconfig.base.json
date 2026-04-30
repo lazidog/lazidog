@@ -1,16 +1,25 @@
 {
   "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "allowJs": false,
     "strict": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    // resolveJsonModule allows you to import foo from './bar.json'. This only works when Node-style module resolution is used (like how node resolves files)
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "noEmit": true,
     "isolatedModules": true,
-    "incremental": true,
-    "target": "es2022",
-    "lib": ["es2023"]
-  },
-  "exclude": ["node_modules", "dist"]
+    "verbatimModuleSyntax": true,
+    "baseUrl": ".",
+    "paths": {
+      "@lazidog/ui": ["packages/ui/src/index.ts"],
+      "@lazidog/shared": ["packages/shared/src/index.ts"],
+      "@lazidog/db": ["packages/db/src/index.ts"],
+      "@lazidog/utils": ["packages/utils/src/index.ts"],
+      "@lazidog/config": ["packages/config/src/index.ts"],
+      "@lazidog/api-client": ["packages/api-client/src/index.ts"]
+    }
+  }
 }

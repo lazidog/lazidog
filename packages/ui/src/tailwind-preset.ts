@@ -1,0 +1,25 @@
+import type { Config } from 'tailwindcss';
+
+const preset: Partial<Config> = {
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          50: '#f2fbff',
+          100: '#dff4ff',
+          200: '#b9eaff',
+          300: '#7fdcff',
+          400: '#3ac6ff',
+          500: '#10a6ff',
+          600: '#007fe0',
+          700: '#0064b4',
+          800: '#065594',
+          900: '#0b467a'
+        }
+      }
+    }
+  }
+};
+
+export default preset;
+

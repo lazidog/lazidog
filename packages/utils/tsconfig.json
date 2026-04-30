@@ -1,11 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "es6",
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
-    "composite": true
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmit": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*.ts"]
 }
+

@@ -1,0 +1,12 @@
+name = "lazidog-proxy"
+main = "src/index.ts"
+compatibility_date = "2025-02-14"
+
+[vars]
+ALLOWED_ORIGINS = "https://lazidog.dev"
+
+# Bindings (optional, configure in Cloudflare dashboard or via `wrangler`):
+# [[r2_buckets]]
+# binding = "R2"
+# bucket_name = "lazidog-images"
+

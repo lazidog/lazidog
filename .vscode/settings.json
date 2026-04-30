@@ -1,44 +1,12 @@
 {
-  "editor.codeActionsOnSave": {
-    "quickfix.biome": "explicit",
-    "source.organizeImports": "explicit"
-  },
   "editor.formatOnSave": true,
-  "cSpell.words": [
-    "lazizone",
-    "codegen",
-    "prisma",
-    "graphql",
-    "typeorm",
-    "typeormconfig",
-    "tsup",
-    "vitest",
-    "zod",
-    "usecases",
-    "unvalidated"
-  ],
-  "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
   },
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   },
-  "[markdown]": {
-    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
-  }
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.experimental.useFlatConfig": true
 }
