@@ -11,4 +11,3 @@ Examples:
 - `chore(repo): upgrade dependencies`
 
 Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`.
-

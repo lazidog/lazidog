@@ -11,4 +11,3 @@ export function requestIdMiddleware(req: Request, res: Response, next: NextFunct
   req.requestId = requestId;
   next();
 }
-

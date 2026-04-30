@@ -1,4 +1,5 @@
-import { ExecutionContext, Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable, NotImplementedException } from '@nestjs/common';
+import type { ExecutionContext } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { getRuntimeEnv } from '@lazidog/config';
 

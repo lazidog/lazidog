@@ -9,7 +9,12 @@ const envSchema = z.object({
   COOKIE_SECURE: z.preprocess((v) => (v === 'true' ? true : false), z.boolean()).default(false),
 
   JWT_ACCESS_SECRET: z.string().min(16),
-  JWT_ACCESS_TTL_SECONDS: z.coerce.number().int().min(60).max(60 * 60).default(900),
+  JWT_ACCESS_TTL_SECONDS: z.coerce
+    .number()
+    .int()
+    .min(60)
+    .max(60 * 60)
+    .default(900),
 
   GATEWAY_INTERNAL_SECRET: z.string().min(16).default('dev_gateway_secret_change_me'),
 
@@ -21,7 +26,7 @@ const envSchema = z.object({
   AUTH_BASE_URL: z.string().url(),
   GATEWAY_BASE_URL: z.string().url(),
   API_BASE_URL: z.string().url(),
-  SENTRY_DSN: z.string().optional().default('')
+  SENTRY_DSN: z.string().optional().default(''),
 });
 
 export type RuntimeEnv = z.infer<typeof envSchema>;

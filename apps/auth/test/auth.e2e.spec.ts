@@ -44,7 +44,10 @@ describeAuth('auth flow (dev)', () => {
     expect(cookie).toContain('ld_access=');
     expect(cookie).toContain('ld_refresh=');
 
-    const session = await request(app.getHttpServer()).get('/v1/session').set('Cookie', cookie).expect(200);
+    const session = await request(app.getHttpServer())
+      .get('/v1/session')
+      .set('Cookie', cookie)
+      .expect(200);
     expect(session.body.success).toBe(true);
     expect(session.body.data.user.email).toBe('dev@lazidog.dev');
   });

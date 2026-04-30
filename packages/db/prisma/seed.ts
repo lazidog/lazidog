@@ -1,5 +1,3 @@
-import 'dotenv-flow/config';
-
 import { PrismaClient } from '@prisma/client';
 
 async function main() {
@@ -25,4 +23,3 @@ main().catch((err) => {
   console.error(err);
   process.exit(1);
 });
-

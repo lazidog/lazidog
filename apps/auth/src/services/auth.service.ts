@@ -58,7 +58,10 @@ export class AuthService {
     if (opts.provider !== 'dev' && opts.providerAccountId) {
       await this.prisma.account.upsert({
         where: {
-          provider_providerAccountId: { provider: opts.provider, providerAccountId: opts.providerAccountId },
+          provider_providerAccountId: {
+            provider: opts.provider,
+            providerAccountId: opts.providerAccountId,
+          },
         },
         create: {
           userId: user.id,

@@ -17,4 +17,3 @@ export class TokenService {
     }) as AccessTokenClaims;
   }
 }
-

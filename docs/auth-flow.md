@@ -27,4 +27,3 @@ unless `COOKIE_DOMAIN` is explicitly set.
 
 Gateway validates access JWT and injects user context headers to the API.
 API performs RBAC checks (role-based guard) and validates input using shared Zod schemas.
-

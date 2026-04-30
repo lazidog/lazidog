@@ -14,12 +14,11 @@ const preset: Partial<Config> = {
           600: '#007fe0',
           700: '#0064b4',
           800: '#065594',
-          900: '#0b467a'
-        }
-      }
-    }
-  }
+          900: '#0b467a',
+        },
+      },
+    },
+  },
 };
 
 export default preset;
-

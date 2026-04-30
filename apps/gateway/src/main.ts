@@ -1,9 +1,5 @@
-import 'dotenv-flow/config';
 import 'reflect-metadata';
 
-import cookieParser from 'cookie-parser';
-import helmet from 'helmet';
-import { NestFactory } from '@nestjs/core';
 import { getRuntimeEnv } from '@lazidog/config';
 import {
   ApiExceptionFilter,
@@ -11,6 +7,10 @@ import {
   createPinoHttp,
   requestIdMiddleware,
 } from '@lazidog/utils';
+import { NestFactory } from '@nestjs/core';
+import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
+
 import { AppModule } from './modules/app.module';
 
 async function bootstrap() {
@@ -34,7 +34,6 @@ async function bootstrap() {
 }
 
 bootstrap().catch((err) => {
-  // eslint-disable-next-line no-console
   console.error(err);
   process.exit(1);
 });

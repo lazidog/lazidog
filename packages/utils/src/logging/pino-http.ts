@@ -24,4 +24,3 @@ export function createPinoHttp(): RequestHandler {
     },
   }) as unknown as RequestHandler;
 }
-

@@ -43,7 +43,11 @@ export class AuthController {
 
   @Get('/login/google/callback')
   @UseGuards(GoogleAuthGuard)
-  async googleCallback(@Req() req: Request, @Query('state') stateRaw: string | undefined, @Res() res: Response) {
+  async googleCallback(
+    @Req() req: Request,
+    @Query('state') stateRaw: string | undefined,
+    @Res() res: Response,
+  ) {
     const returnTo = typeof stateRaw === 'string' && stateRaw.length ? stateRaw : '/';
     // passport-google-oauth20 attaches profile as req.user
     const profile = req.user as any;

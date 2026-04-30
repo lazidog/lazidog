@@ -43,7 +43,9 @@ export function SessionCard() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <div className="text-sm font-medium text-zinc-900">Session</div>
-          <div className="text-xs text-zinc-500">Fetched via gateway with cookies (credentials: include)</div>
+          <div className="text-xs text-zinc-500">
+            Fetched via gateway with cookies (credentials: include)
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" onClick={load} disabled={state.status === 'loading'}>

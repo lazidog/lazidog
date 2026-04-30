@@ -6,12 +6,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: 'sm' | 'md';
 };
 
-export function Button({
-  className,
-  variant = 'primary',
-  size = 'md',
-  ...props
-}: ButtonProps) {
+export function Button({ className, variant = 'primary', size = 'md', ...props }: ButtonProps) {
   return (
     <button
       className={cn(
@@ -30,4 +25,3 @@ export function Button({
     />
   );
 }
-

@@ -30,7 +30,7 @@ export class ProxyService {
       target: this.env.API_BASE_URL,
       changeOrigin: true,
       xfwd: true,
-      pathRewrite: (path) => path.replace(/^\\/v1\\/api/, '/v1'),
+      pathRewrite: (path) => path.replace(/^\/v1\/api/, '/v1'),
       on: {
         proxyReq: (proxyReq) => {
           proxyReq.setHeader('x-user-id', claims.sub);
@@ -44,4 +44,3 @@ export class ProxyService {
     return mw(req, res, () => undefined);
   }
 }
-

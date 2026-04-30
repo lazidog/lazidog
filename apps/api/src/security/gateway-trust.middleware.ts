@@ -19,4 +19,3 @@ export function GatewayTrustMiddleware(secret: string) {
     next();
   };
 }
-

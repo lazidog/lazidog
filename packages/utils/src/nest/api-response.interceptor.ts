@@ -1,9 +1,5 @@
-import {
-  CallHandler,
-  ExecutionContext,
-  Injectable,
-  NestInterceptor,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
 
 @Injectable()
@@ -12,4 +8,3 @@ export class ApiResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(map((data) => ({ success: true as const, data })));
   }
 }
-

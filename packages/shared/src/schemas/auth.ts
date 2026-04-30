@@ -9,4 +9,3 @@ export type Session = z.infer<typeof sessionSchema>;
 export const loginRedirectQuerySchema = z.object({
   returnTo: z.string().min(1).default('/'),
 });
-

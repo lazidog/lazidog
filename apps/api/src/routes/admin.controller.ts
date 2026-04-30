@@ -12,4 +12,3 @@ export class AdminController {
     return { ok: true };
   }
 }
-

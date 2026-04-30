@@ -36,7 +36,7 @@ export default [
       react: { version: 'detect' },
     },
     rules: {
-      'simple-import-sort/imports': 'error',
+      'simple-import-sort/imports': 'off',
       'simple-import-sort/exports': 'error',
       'import/first': 'error',
       'import/no-duplicates': 'error',

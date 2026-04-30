@@ -21,4 +21,3 @@ export class GatewayController {
     return this.proxy.proxyToApi(req, res);
   }
 }
-
