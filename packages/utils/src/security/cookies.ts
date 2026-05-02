@@ -11,7 +11,10 @@ export type CookieOptions = {
   path: string;
 };
 
-export function getAuthCookieOptions(opts: { secure: boolean; domain?: string }): CookieOptions {
+export function getAuthCookieOptions(opts: {
+  secure: boolean;
+  domain?: string;
+}): CookieOptions {
   return {
     httpOnly: true,
     secure: opts.secure,

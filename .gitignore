@@ -14,3 +14,5 @@ build
 
 **/.wrangler
 
+tsconfig.build.tsbuildinfo
+next-env.d.ts

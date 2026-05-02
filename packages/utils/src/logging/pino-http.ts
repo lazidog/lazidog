@@ -4,6 +4,7 @@ import { REQUEST_ID_HEADER } from '../nest/request-id.middleware';
 
 export function createPinoHttp(): RequestHandler {
   return pinoHttp({
+    transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : undefined,
     customProps: (req) => ({
       requestId:
         // @ts-expect-error - set by requestIdMiddleware

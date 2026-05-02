@@ -1,23 +1,25 @@
-import { Module } from '@nestjs/common';
-import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
-import { GatewayController } from '../routes/gateway.controller';
-import { ProxyService } from '../services/proxy.service';
-import { TokenService } from '../services/token.service';
+import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { APP_GUARD } from "@nestjs/core";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { GatewayModule } from "./gateway/gateway.module";
+import { SharedModule } from "./shared/shared.module";
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     ThrottlerModule.forRoot([
       {
         ttl: 60,
         limit: 120,
       },
     ]),
+    SharedModule,
+    GatewayModule,
   ],
-  controllers: [GatewayController],
   providers: [
-    ProxyService,
-    TokenService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

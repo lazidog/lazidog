@@ -54,7 +54,7 @@ async function requestJson<T>(opts: {
 }
 
 export function createApiClient({ baseUrl, fetch }: ClientOpts) {
-  const fetchImpl = fetch ?? globalThis.fetch;
+  const fetchImpl = fetch ?? globalThis.fetch.bind(globalThis);
   if (!fetchImpl) {
     throw new Error('fetch is not available; pass a fetch implementation');
   }

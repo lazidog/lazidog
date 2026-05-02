@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 
 export const REQUEST_ID_HEADER = 'x-request-id';
 

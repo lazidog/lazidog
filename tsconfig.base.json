@@ -13,13 +13,6 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
-    "paths": {
-      "@lazidog/ui": ["packages/ui/src/index.ts"],
-      "@lazidog/shared": ["packages/shared/src/index.ts"],
-      "@lazidog/db": ["packages/db/src/index.ts"],
-      "@lazidog/utils": ["packages/utils/src/index.ts"],
-      "@lazidog/config": ["packages/config/src/index.ts"],
-      "@lazidog/api-client": ["packages/api-client/src/index.ts"]
-    }
+    "rootDir": "."
   }
 }

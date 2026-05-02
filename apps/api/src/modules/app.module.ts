@@ -1,19 +1,22 @@
-import { getRuntimeEnv } from '@lazidog/config';
 import { Module } from '@nestjs/common';
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 
-import { AdminController } from '../routes/admin.controller';
-import { EchoController } from '../routes/echo.controller';
-import { HealthController } from '../routes/health.controller';
-import { UsersController } from '../routes/users.controller';
-import { GatewayTrustMiddleware } from '../security/gateway-trust.middleware';
+import { GatewayTrustMiddleware } from './security/gateway-trust.middleware';
+import { ConfigModule } from '@nestjs/config';
+import { SharedModule } from './shared/shared.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  controllers: [HealthController, UsersController, AdminController, EchoController],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    SharedModule,
+    UserModule,
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    const env = getRuntimeEnv();
-    consumer.apply(GatewayTrustMiddleware(env.GATEWAY_INTERNAL_SECRET)).forRoutes('*');
+    consumer.apply(GatewayTrustMiddleware).forRoutes('*');
   }
 }

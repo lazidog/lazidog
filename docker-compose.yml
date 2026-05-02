@@ -6,7 +6,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: lazidog
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
       - lazidog_pg:/var/lib/postgresql/data
 
@@ -21,7 +21,7 @@ services:
     depends_on:
       - postgres
     ports:
-      - '4000:4000'
+      - "4000:4000"
     command: sh -lc "corepack enable && yarn install && yarn workspace @lazidog/db prisma:generate && yarn workspace @lazidog/db prisma:push && yarn workspace @lazidog/api dev"
 
   auth:
@@ -35,7 +35,7 @@ services:
     depends_on:
       - postgres
     ports:
-      - '4002:4002'
+      - "4002:4002"
     command: sh -lc "corepack enable && yarn install && yarn workspace @lazidog/db prisma:generate && yarn workspace @lazidog/db prisma:push && yarn workspace @lazidog/auth dev"
 
   gateway:
@@ -50,7 +50,7 @@ services:
       - api
       - auth
     ports:
-      - '4001:4001'
+      - "4001:4001"
     command: sh -lc "corepack enable && yarn install && yarn workspace @lazidog/gateway dev"
 
   web:
@@ -64,7 +64,7 @@ services:
     depends_on:
       - gateway
     ports:
-      - '3000:3000'
+      - "3000:3000"
     command: sh -lc "corepack enable && yarn install && yarn workspace @lazidog/web dev"
 
 volumes:

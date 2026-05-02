@@ -6,7 +6,7 @@ Production-minded MVP scaffold for a multi-surface platform with shared SSO acro
 - `api.lazidog.dev` -> `apps/api`
 - `auth.lazidog.dev` -> `apps/auth`
 - `gateway.lazidog.dev` -> `apps/gateway`
-- `proxy.lazidog.dev` -> `apps/proxy` (Cloudflare Worker)
+- `r2-worker.lazidog.dev` -> `apps/r2-worker` (Cloudflare Worker)
 
 ## Quickstart (local)
 

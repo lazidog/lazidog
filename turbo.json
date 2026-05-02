@@ -10,12 +10,16 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", ".vercel/**", "build/**"]
     },
+    "format": {
+      "dependsOn": ["^format"],
+      "outputs": []
+    },
     "lint": {
       "dependsOn": ["^lint"],
       "outputs": []
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"],
+      "dependsOn": ["^build", "^typecheck"],
       "outputs": []
     },
     "test": {
@@ -27,4 +31,3 @@
     }
   }
 }
-

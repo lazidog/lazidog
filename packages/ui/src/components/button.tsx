@@ -19,7 +19,7 @@ export function Button({ className, variant = 'primary', size = 'md', ...props }
           'bg-zinc-100 text-zinc-900 hover:bg-zinc-200 focus-visible:ring-zinc-400',
         variant === 'ghost' &&
           'bg-transparent text-zinc-900 hover:bg-zinc-100 focus-visible:ring-zinc-400',
-        className,
+        className
       )}
       {...props}
     />

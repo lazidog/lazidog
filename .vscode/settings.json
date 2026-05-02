@@ -1,12 +1,30 @@
 {
+  "explorer.fileNesting.enabled": true,
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   },
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "eslint.experimental.useFlatConfig": true
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "always"
+  },
+  "cSpell.words": ["lazidog"]
 }

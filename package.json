@@ -10,36 +10,38 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "turbo run dev --parallel --filter=./apps/*",
+    "dev": "turbo run dev --parallel --filter='./apps/*'",
+    "web": "cd apps/web && yarn dev",
+    "web:prod": "yarn workspace @lazidog/web build",
+    "api": "cd apps/api && yarn dev",
+    "api:prod": "yarn workspace @lazidog/api build",
+    "proxy": "cd apps/r2-worker && yarn dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "format": "prettier -w .",
-    "format:check": "prettier -c .",
+    "format": "turbo run format",
     "prepare": "husky",
-    "clean": "turbo run clean && rm -rf node_modules .turbo"
+    "clean:all": "turbo run clean && rm -rf node_modules .turbo",
+    "clean:turbo": "rm -rf .turbo && rm -rf **/**/.turbo",
+    "clean": "rm -rf node_modules && rm -rf **/**/node_modules"
+
   },
   "devDependencies": {
-    "@eslint/js": "^9.19.0",
+    "@biomejs/biome": "^1.9.3",
     "@types/node": "^22.10.0",
-    "eslint": "^9.19.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-react": "^7.37.4",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "dotenv": "^16.5.0",
+    "dotenv-cli": "^10.0.0",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
-    "prettier": "^3.4.2",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2",
     "turbo": "^2.4.2",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.22.0"
+    "typescript": "^5.7.3"
   },
   "lint-staged": {
     "*.{js,cjs,mjs,ts,tsx,json,md,yml,yaml,css,scss}": [
-      "prettier -w"
+      "biome check --write"
     ]
   }
 }

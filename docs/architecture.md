@@ -6,7 +6,7 @@ This repo is a Turborepo + Yarn workspaces monorepo.
 - `apps/api`: Backend API (api.lazidog.dev)
 - `apps/auth`: Auth service (auth.lazidog.dev)
 - `apps/gateway`: API gateway (gateway.lazidog.dev)
-- `apps/proxy`: Cloudflare Worker image proxy (proxy.lazidog.dev)
+- `apps/r2-worker`: Cloudflare Worker image proxy (r2-worker.lazidog.dev)
 - `packages/*`: shared libraries (schemas, Prisma, UI, utils, config, api-client)
 
 See `docs/auth-flow.md` for SSO and cookie strategy.
@@ -17,7 +17,7 @@ See `docs/auth-flow.md` for SSO and cookie strategy.
 - `apps/api`: 4000
 - `apps/gateway`: 4001
 - `apps/auth`: 4002
-- `apps/proxy`: 8787 (wrangler dev)
+- `apps/r2-worker`: 8787 (wrangler dev)
 
 ## Gateway trust
 
