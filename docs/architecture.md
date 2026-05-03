@@ -7,7 +7,7 @@ This repo is a Turborepo + Yarn workspaces monorepo.
 - `apps/auth`: Auth service (auth.lazidog.dev)
 - `apps/gateway`: API gateway (gateway.lazidog.dev)
 - `apps/r2-worker`: Cloudflare Worker image proxy (r2-worker.lazidog.dev)
-- `packages/*`: shared libraries (schemas, Prisma, UI, utils, config, api-client)
+- `packages/*`: shared libraries (schemas, Prisma, UI, utils, config)
 
 See `docs/auth-flow.md` for SSO and cookie strategy.
 
