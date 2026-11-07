@@ -1,23 +1,33 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
   "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
-    },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "lint": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", ".vercel/**", "build/**"]
+    },
+    "format": {
+      "dependsOn": ["^format"],
       "outputs": []
     },
-    "fmt": {
+    "lint": {
+      "dependsOn": ["^lint"],
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^build", "^typecheck"],
       "outputs": []
     },
     "test": {
-      "dependsOn": ["build"],
-      "outputs": []
+      "dependsOn": ["^test"],
+      "outputs": ["coverage/**"]
+    },
+    "clean": {
+      "cache": false
     }
   }
 }

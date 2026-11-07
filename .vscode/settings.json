@@ -1,32 +1,14 @@
 {
-  "editor.codeActionsOnSave": {
-    "quickfix.biome": "explicit",
-    "source.organizeImports": "explicit"
-  },
+  "explorer.fileNesting.enabled": true,
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
   "editor.formatOnSave": true,
-  "cSpell.words": [
-    "lazizone",
-    "codegen",
-    "prisma",
-    "graphql",
-    "typeorm",
-    "typeormconfig",
-    "tsup",
-    "vitest",
-    "zod",
-    "usecases",
-    "unvalidated"
-  ],
-  "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
   "[typescriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[json]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[javascript]": {
@@ -35,10 +17,14 @@
   "[javascriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   },
-  "[markdown]": {
-    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
-  }
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "always"
+  },
+  "cSpell.words": ["lazidog"]
 }

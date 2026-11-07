@@ -1,5 +1,5 @@
-# CHANGELOG
+# Changelog
 
-## 29092025 - feat(ddd-package): new package that follow DDD pattern
+All notable changes to this project will be documented in this file.
 
-## 03082025 - Graphql codegen plugins for typescript
+The format is based on Keep a Changelog, and this project adheres to Conventional Commits.
