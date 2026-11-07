@@ -10,6 +10,11 @@ services:
     volumes:
       - lazidog_pg:/var/lib/postgresql/data
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
   api:
     image: node:20-alpine
     working_dir: /workspace
@@ -20,9 +25,12 @@ services:
       - .env
     depends_on:
       - postgres
+      - redis
+    environment:
+      PORT: 4000
     ports:
       - "4000:4000"
-    command: sh -lc "corepack enable && yarn install && yarn workspace @lazidog/db prisma:generate && yarn workspace @lazidog/db prisma:push && yarn workspace @lazidog/api dev"
+    command: sh -lc "corepack enable && yarn install && yarn workspace @lazidog/db prisma:gen && yarn workspace @lazidog/db prisma:db:push && yarn workspace @lazidog/api dev"
 
   auth:
     image: node:20-alpine
@@ -34,11 +42,14 @@ services:
       - .env
     depends_on:
       - postgres
+      - redis
+    environment:
+      PORT: 4002
     ports:
       - "4002:4002"
-    command: sh -lc "corepack enable && yarn install && yarn workspace @lazidog/db prisma:generate && yarn workspace @lazidog/db prisma:push && yarn workspace @lazidog/auth dev"
+    command: sh -lc "corepack enable && yarn install && yarn workspace @lazidog/db prisma:gen && yarn workspace @lazidog/db prisma:db:push && yarn workspace @lazidog/auth dev"
 
-  gateway:
+  worker:
     image: node:20-alpine
     working_dir: /workspace
     volumes:
@@ -47,11 +58,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - api
-      - auth
-    ports:
-      - "4001:4001"
-    command: sh -lc "corepack enable && yarn install && yarn workspace @lazidog/gateway dev"
+      - redis
+    command: sh -lc "corepack enable && yarn install && yarn workspace @lazidog/worker dev"
 
   web:
     image: node:20-alpine
@@ -62,7 +70,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - gateway
+      - api
+      - auth
     ports:
       - "3000:3000"
     command: sh -lc "corepack enable && yarn install && yarn workspace @lazidog/web dev"

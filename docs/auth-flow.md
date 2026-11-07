@@ -1,29 +1,42 @@
-# Auth Flow (SSO)
+# Auth Flow
 
-Goal: SSO across subdomains via shared cookies.
+Authentication is Google OAuth only.
 
 ## Cookies
 
-- Domain: `.lazidog.dev` (prod)
+Session cookies are:
+
+- Domain: `.lazidog.dev`
 - httpOnly: `true`
 - secure: `true`
 - sameSite: `lax`
 
-In local dev, browsers generally don't allow `Domain=localhost`. This scaffold defaults to host-only cookies
-unless `COOKIE_DOMAIN` is explicitly set.
+The access token is never stored in `localStorage`.
 
 ## Tokens
 
-- Access token: short-lived JWT (signed, includes `sub`, `role`, `sid`)
-- Refresh token: opaque token stored in DB (revocable + rotatable)
+- Access token: short-lived JWT with `sub`, `role`, and `sid`.
+- Refresh token: opaque random token stored only as a SHA-256 hash in PostgreSQL.
+- Refresh tokens rotate on every refresh.
+- The old refresh token is revoked before the new one is accepted.
+- Reuse of a revoked refresh token revokes active tokens for that user.
 
 ## Login
 
-1. `web` redirects to `auth` login route (Google or dev/mock).
-2. `auth` completes OAuth callback, creates/updates user & account, issues refresh token record.
-3. `auth` sets cookies and redirects back to the original return URL.
+1. Web redirects to `GET /v1/login/google?returnTo=/`.
+2. Auth completes the Google callback.
+3. Auth upserts `User` and `Account`.
+4. Auth creates a refresh-token record and sets `ld_access` and `ld_refresh`.
+5. Auth redirects back to the validated `returnTo`.
 
-## API / Gateway
+## Refresh
 
-Gateway validates access JWT and injects user context headers to the API.
-API performs RBAC checks (role-based guard) and validates input using shared Zod schemas.
+1. Client receives `401`.
+2. Axios calls `POST /v1/refresh`.
+3. Auth validates the refresh cookie, revokes the old DB record, creates a new refresh token, and sets new cookies.
+4. Axios retries the original request once.
+5. If refresh fails, the client clears auth state and stops retrying.
+
+## API Authorization
+
+The API validates the `ld_access` cookie directly using the shared JWT configuration. RBAC guards read `req.user.role`.

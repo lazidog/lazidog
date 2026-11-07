@@ -1,44 +1,55 @@
 # lazidog platform monorepo
 
-Production-minded MVP scaffold for a multi-surface platform with shared SSO across subdomains:
+Production-minded foundation for a modular platform with shared identity and future product surfaces.
 
-- `lazidog.dev` -> `apps/web`
-- `api.lazidog.dev` -> `apps/api`
-- `auth.lazidog.dev` -> `apps/auth`
-- `gateway.lazidog.dev` -> `apps/gateway`
-- `r2-worker.lazidog.dev` -> `apps/r2-worker` (Cloudflare Worker)
+- `apps/web` -> Next.js frontend
+- `apps/api` -> NestJS API
+- `apps/auth` -> NestJS Google OAuth service
+- `apps/worker` -> BullMQ workers
+- `apps/proxy` -> Cloudflare Worker image proxy
+- `packages/shared` -> contracts, env validation, constants, helpers
+- `packages/db` -> Prisma/PostgreSQL
 
-## Quickstart (local)
-
-Prereqs: Node 20+, Docker, Yarn (Corepack).
+## Quickstart
 
 ```bash
 corepack enable
 yarn
 cp .env.example .env
-docker compose up -d postgres
-yarn workspace @lazidog/db prisma:generate
-yarn workspace @lazidog/db prisma:push
+docker compose up -d postgres redis
+yarn workspace @lazidog/db prisma:gen
+yarn workspace @lazidog/db prisma:db:push
 yarn dev
 ```
 
 Open:
 
 - Web: http://localhost:3000
-- Gateway: http://localhost:4001/v1/health
-- API (direct): http://localhost:4000/v1/health
-- Auth (direct): http://localhost:4002/v1/session
+- API: http://localhost:4000/v1/health
+- Auth: http://localhost:4002/v1/session
+- Proxy: http://localhost:8788
 
-Dev SSO note: cookies are domain-scoped (not port-scoped), so a cookie set on `localhost` works across ports.
+For browser cookies with `.lazidog.dev`, use local hostnames that resolve to `127.0.0.1` instead of plain `localhost`.
 
-## Local via docker-compose (all services)
+## Docker Compose
 
 ```bash
 cp .env.example .env
 docker compose up --build
 ```
 
+## Quality
+
+```bash
+yarn lint
+yarn typecheck
+yarn test
+yarn build
+```
+
 Docs:
 
 - `docs/architecture.md`
 - `docs/auth-flow.md`
+- `docs/development.md`
+- `docs/code-conventions.md`

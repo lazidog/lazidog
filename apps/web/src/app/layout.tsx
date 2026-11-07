@@ -1,9 +1,10 @@
-import "./globals.css";
-import type { Metadata } from "next";
+import './globals.css';
+import type { Metadata } from 'next';
+import { AppProviders } from '../lib/providers/app-providers';
 
 export const metadata: Metadata = {
-  title: "lazidog.dev",
-  description: "Multi-surface platform scaffold",
+  title: 'lazidog.dev',
+  description: 'Multi-surface platform scaffold',
 };
 
 export default function RootLayout({
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AppProviders>{children}</AppProviders>
+      </body>
     </html>
   );
 }

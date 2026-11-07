@@ -5,7 +5,7 @@ import {
   ApiResponseInterceptor,
   createPinoHttp,
   requestIdMiddleware,
-} from '@lazidog/utils';
+} from '@lazidog/shared';
 import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
@@ -20,11 +20,6 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(requestIdMiddleware);
   app.use(createPinoHttp());
-  app.use((req, res, next) => {
-    console.log('API received request:', req.method, req.url);
-    next();
-  });
-
   // Security headers — helmet with enhanced config
   app.use(
     helmet({
@@ -71,7 +66,7 @@ async function bootstrap() {
   const port = configService.getNumber('PORT');
   await app.listen(port);
 
-  console.log(`api is running on http://localhost${port}`);
+  console.log(`api is running on http://localhost:${port}`);
 }
 
 bootstrap().catch((err) => {

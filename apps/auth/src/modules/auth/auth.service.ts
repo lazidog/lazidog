@@ -1,15 +1,19 @@
-import { createHash, randomBytes, randomUUID } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import { getPrisma } from '@lazidog/db';
-import { userSchema } from '@lazidog/shared';
-import { cookieNames, getAuthCookieOptions } from '@lazidog/utils';
+import {
+  cookieNames,
+  getAuthCookieOptions,
+  logoutResponseSchema,
+  REFRESH_TOKEN_TTL_DAYS,
+  refreshSessionResponseSchema,
+  sessionSchema,
+  sha256Hex,
+  userSchema,
+} from '@lazidog/shared';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { AppConfigService } from '../shared/services/app-config.service';
 import { TokenService } from './token.service';
-
-function sha256Hex(input: string) {
-  return createHash('sha256').update(input).digest('hex');
-}
 
 function safeReturnTo(config: AppConfigService, returnTo: string): string {
   // Allow absolute URLs only if they match WEB_BASE_URL; otherwise fallback to WEB_BASE_URL.
@@ -41,130 +45,83 @@ export class AuthService {
     imageUrl?: string;
     providerAccountId?: string;
   }) {
-    console.log('issueSessionAndRedirect called with:', {
-      provider: opts.provider,
-      email: opts.email,
-    });
     if (!opts.email) throw new BadRequestException('Missing email from provider');
 
-    try {
-      const user = await this.prisma.user.upsert({
-        where: { email: opts.email.toLowerCase() },
-        create: {
-          email: opts.email.toLowerCase(),
-          name: opts.name ?? null,
-          imageUrl: opts.imageUrl ?? null,
-          role: 'user',
-        },
-        update: {
-          name: opts.name ?? undefined,
-          imageUrl: opts.imageUrl ?? undefined,
-        },
-      });
+    const user = await this.prisma.user.upsert({
+      where: { email: opts.email.toLowerCase() },
+      create: {
+        email: opts.email.toLowerCase(),
+        name: opts.name ?? null,
+        imageUrl: opts.imageUrl ?? null,
+        role: 'user',
+      },
+      update: {
+        name: opts.name ?? undefined,
+        imageUrl: opts.imageUrl ?? undefined,
+      },
+    });
 
-      if (opts.provider !== 'dev' && opts.providerAccountId) {
-        await this.prisma.account.upsert({
-          where: {
-            provider_providerAccountId: {
-              provider: opts.provider,
-              providerAccountId: opts.providerAccountId,
-            },
-          },
-          create: {
-            userId: user.id,
-            provider: opts.provider,
-            providerAccountId: opts.providerAccountId,
-          },
-          update: { userId: user.id },
-        });
-      }
-
-      const sid = randomUUID();
-      const accessToken = this.tokens.signAccessToken({
-        sub: user.id,
-        role: user.role as any,
-        sid,
-      });
-      const refreshToken = randomBytes(32).toString('hex');
-      const refreshTokenHash = sha256Hex(refreshToken);
-
-      const refreshTtlDays = 30;
-      const refreshExpiresAt = new Date(Date.now() + refreshTtlDays * 24 * 60 * 60 * 1000);
-
-      await this.prisma.refreshToken.create({
-        data: {
-          userId: user.id,
-          tokenHash: refreshTokenHash,
-          expiresAt: refreshExpiresAt,
-        },
-      });
-
-      const cookieOpts = getAuthCookieOptions({
-        secure: this.config.getBoolean('COOKIE_SECURE'),
-        domain: this.config.get('COOKIE_DOMAIN'),
-      });
-
-      console.log('Setting cookies:', {
-        access: {
-          name: cookieNames.access,
-          value: accessToken,
-          options: {
-            ...cookieOpts,
-            maxAge: this.config.getNumber('JWT_ACCESS_TTL_SECONDS') * 1000,
-          },
-        },
-        refresh: {
-          name: cookieNames.refresh,
-          value: refreshToken,
-          options: {
-            ...cookieOpts,
-            maxAge: refreshTtlDays * 24 * 60 * 60 * 1000,
-          },
-        },
-      });
-
-      opts.res.cookie(cookieNames.access, accessToken, {
-        ...cookieOpts,
-        maxAge: this.config.getNumber('JWT_ACCESS_TTL_SECONDS') * 1000,
-      });
-      opts.res.cookie(cookieNames.refresh, refreshToken, {
-        ...cookieOpts,
-        maxAge: refreshTtlDays * 24 * 60 * 60 * 1000,
-      });
-
-      opts.res.redirect(safeReturnTo(this.config, opts.returnTo));
-    } catch (error) {
-      console.error('Failed to issue session:', error);
-      throw error;
+    if (opts.provider !== 'google' || !opts.providerAccountId) {
+      throw new BadRequestException('Google account profile is incomplete');
     }
+
+    await this.prisma.account.upsert({
+      where: {
+        provider_providerAccountId: {
+          provider: opts.provider,
+          providerAccountId: opts.providerAccountId,
+        },
+      },
+      create: {
+        userId: user.id,
+        provider: opts.provider,
+        providerAccountId: opts.providerAccountId,
+      },
+      update: { userId: user.id },
+    });
+
+    const sid = randomUUID();
+    const accessToken = this.tokens.signAccessToken({
+      sub: user.id,
+      role: user.role,
+      sid,
+    });
+    const refreshToken = randomBytes(32).toString('hex');
+    const refreshTokenHash = sha256Hex(refreshToken);
+    const refreshExpiresAt = new Date(Date.now() + REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000);
+
+    await this.prisma.refreshToken.create({
+      data: {
+        userId: user.id,
+        tokenHash: refreshTokenHash,
+        expiresAt: refreshExpiresAt,
+      },
+    });
+
+    this.setSessionCookies(opts.res, accessToken, refreshToken);
+    opts.res.redirect(safeReturnTo(this.config, opts.returnTo));
   }
 
   async getSession(req: Request) {
-    try {
-      console.log('Cookies received:', req.cookies);
-      const access = req.cookies?.[cookieNames.access];
-      if (!access) throw new UnauthorizedException('Not authenticated');
-      const claims = this.tokens.verifyAccessToken(access);
-      const user = await this.prisma.user.findUnique({
-        where: { id: claims.sub },
-      });
-      if (!user) throw new UnauthorizedException('Not authenticated');
+    const access = req.cookies?.[cookieNames.access];
+    if (!access) throw new UnauthorizedException('Not authenticated');
+    const claims = this.tokens.verifyAccessToken(access);
+    const user = await this.prisma.user.findUnique({
+      where: { id: claims.sub },
+    });
+    if (!user) throw new UnauthorizedException('Not authenticated');
 
-      return {
-        user: userSchema.parse({
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          imageUrl: user.imageUrl,
-          role: user.role,
-          createdAt: user.createdAt.toISOString(),
-          updatedAt: user.updatedAt.toISOString(),
-        }),
-      };
-    } catch (error) {
-      console.error('Failed to get session:', error);
-      throw error;
-    }
+    return sessionSchema.parse({
+      user: userSchema.parse({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        imageUrl: user.imageUrl,
+        role: user.role,
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
+      }),
+    });
   }
 
   async refresh(req: Request, res: Response) {
@@ -175,30 +132,41 @@ export class AuthService {
     const found = await this.prisma.refreshToken.findUnique({
       where: { tokenHash: refreshHash },
     });
-    if (!found || found.revokedAt || found.expiresAt.getTime() < Date.now()) {
+    if (!found) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+    if (found.revokedAt) {
+      await this.prisma.refreshToken.updateMany({
+        where: { userId: found.userId, revokedAt: null },
+        data: { revokedAt: new Date() },
+      });
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+    if (found.expiresAt.getTime() < Date.now()) {
       throw new UnauthorizedException('Invalid refresh token');
     }
 
-    // Rotate: revoke old, create new token linked to old.
     const newRefresh = randomBytes(32).toString('hex');
     const newHash = sha256Hex(newRefresh);
-    const refreshTtlDays = 30;
-    const newExpiresAt = new Date(Date.now() + refreshTtlDays * 24 * 60 * 60 * 1000);
+    const newExpiresAt = new Date(Date.now() + REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000);
 
-    await this.prisma.$transaction([
-      this.prisma.refreshToken.update({
-        where: { id: found.id },
+    await this.prisma.$transaction(async (tx) => {
+      const revoked = await tx.refreshToken.updateMany({
+        where: { id: found.id, revokedAt: null },
         data: { revokedAt: new Date() },
-      }),
-      this.prisma.refreshToken.create({
+      });
+      if (revoked.count !== 1) {
+        throw new UnauthorizedException('Invalid refresh token');
+      }
+      await tx.refreshToken.create({
         data: {
           userId: found.userId,
           tokenHash: newHash,
           expiresAt: newExpiresAt,
           rotatedFromId: found.id,
         },
-      }),
-    ]);
+      });
+    });
 
     const user = await this.prisma.user.findUnique({
       where: { id: found.userId },
@@ -208,25 +176,13 @@ export class AuthService {
     const sid = randomUUID();
     const newAccess = this.tokens.signAccessToken({
       sub: user.id,
-      role: user.role as any,
+      role: user.role,
       sid,
     });
 
-    const cookieOpts = getAuthCookieOptions({
-      secure: this.config.getBoolean('COOKIE_SECURE'),
-      domain: this.config.get('COOKIE_DOMAIN'),
-    });
+    this.setSessionCookies(res, newAccess, newRefresh);
 
-    res.cookie(cookieNames.access, newAccess, {
-      ...cookieOpts,
-      maxAge: this.config.getNumber('JWT_ACCESS_TTL_SECONDS') * 1000,
-    });
-    res.cookie(cookieNames.refresh, newRefresh, {
-      ...cookieOpts,
-      maxAge: refreshTtlDays * 24 * 60 * 60 * 1000,
-    });
-
-    return { ok: true };
+    return refreshSessionResponseSchema.parse({ refreshed: true });
   }
 
   async logout(req: Request, res: Response) {
@@ -241,13 +197,23 @@ export class AuthService {
         .catch(() => undefined);
     }
 
-    const cookieOpts = getAuthCookieOptions({
-      secure: this.config.getBoolean('COOKIE_SECURE'),
-      domain: this.config.get('COOKIE_DOMAIN'),
-    });
+    const cookieOpts = getAuthCookieOptions(this.config.get('COOKIE_DOMAIN'));
 
     res.clearCookie(cookieNames.access, cookieOpts);
     res.clearCookie(cookieNames.refresh, cookieOpts);
-    return { ok: true };
+    return logoutResponseSchema.parse({ ok: true });
+  }
+
+  private setSessionCookies(res: Response, accessToken: string, refreshToken: string) {
+    const cookieOpts = getAuthCookieOptions(this.config.get('COOKIE_DOMAIN'));
+
+    res.cookie(cookieNames.access, accessToken, {
+      ...cookieOpts,
+      maxAge: this.config.getNumber('JWT_ACCESS_TTL_SECONDS') * 1000,
+    });
+    res.cookie(cookieNames.refresh, refreshToken, {
+      ...cookieOpts,
+      maxAge: REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
+    });
   }
 }

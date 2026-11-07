@@ -10,12 +10,14 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "turbo run dev --parallel --filter='./apps/*'",
+    "dev": "turbo run dev --parallel",
     "web": "cd apps/web && yarn dev",
     "web:prod": "yarn workspace @lazidog/web build",
     "api": "cd apps/api && yarn dev",
     "api:prod": "yarn workspace @lazidog/api build",
-    "proxy": "cd apps/r2-worker && yarn dev",
+    "auth": "cd apps/auth && yarn dev",
+    "worker": "cd apps/worker && yarn dev",
+    "proxy": "cd apps/proxy && yarn dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
@@ -25,7 +27,6 @@
     "clean:all": "turbo run clean && rm -rf node_modules .turbo",
     "clean:turbo": "rm -rf .turbo && rm -rf **/**/.turbo",
     "clean": "rm -rf node_modules && rm -rf **/**/node_modules"
-
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.3",

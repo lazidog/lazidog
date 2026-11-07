@@ -12,3 +12,12 @@ export const userSchema = z.object({
 });
 
 export type User = z.infer<typeof userSchema>;
+
+export const meResponseSchema = userSchema.pick({
+  id: true,
+  email: true,
+  name: true,
+  imageUrl: true,
+  role: true,
+});
+export type MeResponse = z.infer<typeof meResponseSchema>;

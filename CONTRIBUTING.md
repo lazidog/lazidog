@@ -11,3 +11,14 @@ Examples:
 - `chore(repo): upgrade dependencies`
 
 Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`.
+
+## Before opening a PR
+
+Run:
+
+```bash
+yarn lint
+yarn typecheck
+yarn test
+yarn build
+```

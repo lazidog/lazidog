@@ -6,7 +6,7 @@ import {
   ApiResponseInterceptor,
   createPinoHttp,
   requestIdMiddleware,
-} from '@lazidog/utils';
+} from '@lazidog/shared';
 import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 

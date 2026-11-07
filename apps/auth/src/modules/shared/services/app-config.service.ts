@@ -1,32 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { authServerEnvSchema, formatZodEnvError } from '@lazidog/shared';
+import type { AuthServerEnv } from '@lazidog/shared';
 import { z } from 'zod';
-
-const envSchema = z.object({
-  PORT: z.coerce.number(),
-  NODE_ENV: z.enum(['development', 'production', 'test']),
-  CORS_ORIGINS: z.string(),
-
-  AUTH_BASE_URL: z.string().url(),
-  WEB_BASE_URL: z.string().url(),
-
-  JWT_ACCESS_SECRET: z.string().min(32),
-  JWT_ACCESS_TTL_SECONDS: z.coerce.number(),
-
-  COOKIE_SECURE: z.coerce.boolean(),
-  COOKIE_DOMAIN: z.string(),
-
-  GOOGLE_CLIENT_ID: z.string(),
-  GOOGLE_CLIENT_SECRET: z.string(),
-});
-
-type EnvConfig = z.infer<typeof envSchema>;
 
 @Injectable()
 export class AppConfigService {
+  private readonly env: AuthServerEnv;
+
   constructor(private configService: ConfigService) {
     const rawEnv = {
-      PORT: this.configService.get('PORT'),
+      PORT: this.configService.get('PORT') ?? '4002',
       NODE_ENV: this.configService.get('NODE_ENV'),
       CORS_ORIGINS: this.configService.get('CORS_ORIGINS'),
 
@@ -36,37 +20,30 @@ export class AppConfigService {
       JWT_ACCESS_SECRET: this.configService.get('JWT_ACCESS_SECRET'),
       JWT_ACCESS_TTL_SECONDS: this.configService.get('JWT_ACCESS_TTL_SECONDS'),
 
-      COOKIE_SECURE: this.configService.get('COOKIE_SECURE'),
       COOKIE_DOMAIN: this.configService.get('COOKIE_DOMAIN'),
 
       GOOGLE_CLIENT_ID: this.configService.get('GOOGLE_CLIENT_ID'),
       GOOGLE_CLIENT_SECRET: this.configService.get('GOOGLE_CLIENT_SECRET'),
+      SENTRY_DSN: this.configService.get('SENTRY_DSN'),
     };
 
     try {
-      envSchema.parse(rawEnv);
+      this.env = authServerEnvSchema.parse(rawEnv);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const missingVars = error.issues
-          .map((err) => `  - ${err.path.join('.')}: ${err.message}`)
-          .join('\n');
         throw new Error(
-          `Environment validation failed:\n${missingVars}\n\nPlease check your .env file.`
+          `Environment validation failed:\n${formatZodEnvError(error)}\n\nPlease check your .env file.`
         );
       }
       throw error;
     }
   }
 
-  get(key: keyof EnvConfig): string {
-    return this.configService.get<string>(key)!;
+  get<K extends keyof AuthServerEnv>(key: K): AuthServerEnv[K] {
+    return this.env[key];
   }
 
-  getNumber(key: keyof EnvConfig): number {
-    return this.configService.get<number>(key)!;
-  }
-
-  getBoolean(key: keyof EnvConfig): boolean {
-    return this.configService.get<boolean>(key)!;
+  getNumber(key: keyof AuthServerEnv): number {
+    return Number(this.env[key]);
   }
 }

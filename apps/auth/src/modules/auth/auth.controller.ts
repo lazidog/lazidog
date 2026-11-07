@@ -1,6 +1,7 @@
-import { loginRedirectQuerySchema } from '@lazidog/shared';
+import { loginRedirectQuerySchema, oauthCallbackQuerySchema } from '@lazidog/shared';
 import { Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import type { Request, Response } from 'express';
+import type { Profile } from 'passport-google-oauth20';
 import { GoogleAuthGuard } from './guards/google-auth.guard';
 import { AuthService } from './auth.service';
 
@@ -8,49 +9,14 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
-  @Get('/login/dev')
-  async devLogin(
-    @Query('returnTo') returnToRaw: string | undefined,
-    @Query('email') emailRaw: string | undefined,
-    @Res() res: Response
-  ) {
-    console.log('devLogin hit');
-    const { returnTo } = loginRedirectQuerySchema.parse({
-      returnTo: returnToRaw,
-    });
-    console.log('returnTo parsed', returnTo);
-    const email = emailRaw?.trim() || 'dev@lazidog.dev';
-    console.log('calling issueSessionAndRedirect');
-    await this.auth.issueSessionAndRedirect({
-      res,
-      returnTo,
-      provider: 'dev',
-      email,
-    });
-  }
-
-  @Get('/login/mezon')
-  async mezonMock(
-    @Query('returnTo') returnToRaw: string | undefined,
-    @Query('email') emailRaw: string | undefined,
-    @Res() res: Response
-  ) {
-    const { returnTo } = loginRedirectQuerySchema.parse({
-      returnTo: returnToRaw,
-    });
-    const email = emailRaw?.trim() || 'mezon.user@lazidog.dev';
-    await this.auth.issueSessionAndRedirect({
-      res,
-      returnTo,
-      provider: 'mezon',
-      email,
-      name: 'Mezon User',
-    });
-  }
-
   @Get('/login/google')
   @UseGuards(GoogleAuthGuard)
-  googleLogin() {}
+  googleLogin(
+    @Query('returnTo') returnToRaw: string | undefined,
+    @Query('state') stateRaw?: string
+  ) {
+    loginRedirectQuerySchema.parse({ returnTo: returnToRaw ?? stateRaw });
+  }
 
   @Get('/login/google/callback')
   @UseGuards(GoogleAuthGuard)
@@ -59,9 +25,9 @@ export class AuthController {
     @Query('state') stateRaw: string | undefined,
     @Res() res: Response
   ) {
-    const returnTo = typeof stateRaw === 'string' && stateRaw.length ? stateRaw : '/';
+    const { state: returnTo } = oauthCallbackQuerySchema.parse({ state: stateRaw });
     // passport-google-oauth20 attaches profile as req.user
-    const profile = req.user as any;
+    const profile = req.user as unknown as Profile;
     await this.auth.issueSessionAndRedirect({
       res,
       returnTo,

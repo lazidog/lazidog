@@ -21,3 +21,8 @@ export const apiResponseSchema = z.union([apiOkSchema, apiFailSchema]);
 
 export type ApiError = z.infer<typeof apiErrorSchema>;
 export type ApiResponse<T> = { success: true; data: T } | { success: false; error: ApiError };
+
+export const requestMetaSchema = z.object({
+  requestId: z.string().optional(),
+});
+export type RequestMeta = z.infer<typeof requestMetaSchema>;
